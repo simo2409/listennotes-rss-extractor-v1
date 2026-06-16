@@ -1,0 +1,14 @@
+{
+  "whisper_dir": "...",
+  "whisper_model": "models/ggml-large-v3-turbo.bin",
+  "cutoff_date": "2026-04-01",
+  "feeds": [
+    {
+      "url": "https://...",
+      "output_dir": "...",
+      "output_txt": true,
+      "output_mp3": false,
+      "output_wav": false
+    }
+  ]
+}
