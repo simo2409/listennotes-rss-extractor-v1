@@ -441,6 +441,30 @@ def transcribe(
     log(f"{prefix}  ✓ Transcript saved: {txt.name} ({len(final)} chars)")
 
 
+def summarize_transcript(txt: Path, skip_ctrl: SkipController | None, prefix: str) -> None:
+    """Replace the transcript with a ≤1000-word summary produced by `claude -p`,
+    stripping any sponsorship segments. The summary (and the original text) is
+    never echoed to the terminal — only progress is reported."""
+    log(f"{prefix}  📝 Riassumendo la trascrizione con claude …")
+    prompt = (
+        f"fai un riassunto in massimo 1000 parole (o meno) del testo nel file "
+        f"{txt.resolve()} rimuovendo eventuali sponsorizzazioni"
+    )
+    result = _run_proc(
+        nice_cmd(["claude", "-p", prompt]),
+        skip_ctrl,
+        stdout=subprocess.PIPE,
+        stderr=subprocess.PIPE,
+        text=True,
+    )
+    summary = result.stdout.strip()
+    if summary:
+        txt.write_text(summary)
+        log(f"{prefix}  ✓ Riassunto salvato: {txt.name} ({len(summary)} chars)")
+    else:
+        log(f"{prefix}  ⚠ Riassunto vuoto — mantengo la trascrizione originale.")
+
+
 # ── Candidate collection / interactive filtering ───────────────────────────────
 
 def collect_candidates(
@@ -580,6 +604,7 @@ def process_episode(
 
         if want_txt:
             transcribe(wav_path, txt_path, whisper_dir, whisper_model, skip_ctrl, threads, prefix)
+            summarize_transcript(txt_path, skip_ctrl, prefix)
 
         if not want_wav and wav_path.exists():
             wav_path.unlink()
