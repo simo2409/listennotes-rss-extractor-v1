@@ -2,6 +2,8 @@
   "whisper_dir": "...",
   "whisper_model": "models/ggml-large-v3-turbo.bin",
   "cutoff_date": "2026-04-01",
+  "parallel_workers": 2,
+  "whisper_threads": null,
   "feeds": [
     {
       "url": "https://...",
