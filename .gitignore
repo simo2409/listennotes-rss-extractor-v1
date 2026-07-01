@@ -11,3 +11,4 @@ wheels/
 
 config.json
 .claude
+seen_items.json
