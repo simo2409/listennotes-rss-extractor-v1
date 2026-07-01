@@ -451,7 +451,7 @@ def summarize_transcript(txt: Path, skip_ctrl: SkipController | None, prefix: st
         f"{txt.resolve()} rimuovendo eventuali sponsorizzazioni"
     )
     result = _run_proc(
-        nice_cmd(["claude", "-p", prompt]),
+        nice_cmd(["claude", "-p", "--add-dir", "/Users/simone/obs-vaults/simone-personal-v1/raw/", prompt]),
         skip_ctrl,
         stdout=subprocess.PIPE,
         stderr=subprocess.PIPE,
